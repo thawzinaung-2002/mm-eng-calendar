@@ -36,7 +36,7 @@
 
       <!-- Calendar Days -->
       @for (day of days(); track day.engDate) {
-        <div class="min-h-[80px] md:min-h-[100px] border border-slate-800 rounded-lg md:rounded-xl p-1 md:p-2 transition-all overflow-hidden"
+        <div class="min-h-[80px] md:min-h-[100px] border border-slate-800 rounded-lg md:rounded-xl p-1 md:p-2 transition overflow-hidden"
              (click)="!day.isPadding && day.mm && selectedDay.set(day)"
              [ngClass]="{
                'opacity-20 pointer-events-none': day.isPadding,
