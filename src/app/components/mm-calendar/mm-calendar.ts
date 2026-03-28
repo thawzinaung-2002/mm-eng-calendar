@@ -10,6 +10,7 @@ import { CeMmDateTime, CeDateTime } from '../../core/myanmar-calendar';
   templateUrl: './mm-calendar.html'
 })
 export class MmCalendarComponent {
+  selectedDay = signal<any>(null);
   mmYear = signal(1387);
   mmMonth = signal(1); // Tagu
 

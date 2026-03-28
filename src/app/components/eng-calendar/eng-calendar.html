@@ -31,10 +31,11 @@
       <!-- Calendar Days -->
       @for (day of days(); track day.date) {
         <div class="min-h-[80px] md:min-h-[100px] border border-slate-800 rounded-lg md:rounded-xl p-1 md:p-2 transition-all group overflow-hidden"
+             (click)="!day.isPadding && selectedDay.set(day)"
              [ngClass]="{
                'opacity-20 pointer-events-none': day.isPadding,
-               'bg-gold/10 border-gold/50': day.isToday,
-               'bg-navy-light hover:bg-gold/5': !day.isPadding && !day.isToday
+               'bg-gold/10 border-gold/50 cursor-pointer': day.isToday,
+               'bg-navy-light cursor-pointer hover:bg-gold/5 hover:-translate-y-1 shadow-lg': !day.isPadding && !day.isToday
              }">
           <div class="flex justify-between items-start mb-1">
             <span class="text-sm md:text-lg font-bold" [class.text-gold]="day.isToday">{{ day.num }}</span>
@@ -62,5 +63,67 @@
         </div>
       }
     </div>
+
+    <!-- Daily Details Modal (English) -->
+    @if (selectedDay()) {
+      <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-navy/80 backdrop-blur-sm transition-opacity" (click)="selectedDay.set(null)"></div>
+        
+        <!-- Modal Card -->
+        <div class="bg-navy border border-gold/20 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 w-full max-w-lg animate-in zoom-in-95 duration-200">
+          <div class="flex justify-between items-start mb-6">
+            <div class="flex flex-col">
+              <span class="text-3xl font-black gold-text">{{ selectedDay().date | date:'MMMM d, yyyy' }}</span>
+              <span class="text-slate-400 font-bold tracking-wide uppercase">{{ selectedDay().date | date:'EEEE' }}</span>
+            </div>
+            <button (click)="selectedDay.set(null)" class="text-slate-500 hover:text-white bg-slate-800/50 hover:bg-slate-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+              ✕
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-6">
+             <div class="bg-navy-light p-4 rounded-2xl border border-slate-700 flex flex-col items-center text-center">
+               <span class="text-[10px] uppercase text-slate-500 font-bold tracking-widest mb-1">Myanmar Date</span>
+               <span class="text-lg font-bold text-white font-myanmar">{{ selectedDay().mm.mm_name_my }}</span>
+               <span class="text-sm text-slate-400">{{ selectedDay().mm.mp_name }} ({{ selectedDay().mm.mf }})</span>
+             </div>
+             <div class="bg-navy-light p-4 rounded-2xl border border-slate-700 flex flex-col items-center text-center">
+               <span class="text-[10px] uppercase text-slate-500 font-bold tracking-widest mb-1">Myanmar Year</span>
+               <span class="text-xl font-black gold-text mt-1">{{ selectedDay().mm.my }}</span>
+               <span class="text-xs text-slate-500 mt-1">Sasana: {{ selectedDay().mm.my + 1182 }}</span>
+             </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-6">
+             <div class="border border-gold/10 p-3 rounded-xl flex flex-col justify-center text-center bg-gold/5">
+                <span class="text-slate-500 text-[9px] uppercase tracking-widest mb-1 font-bold">Zodiac Sign</span>
+                <span class="text-lg font-bold text-white">{{ selectedDay().mm.rasi }}</span>
+             </div>
+             <div class="border border-gold/10 p-3 rounded-xl flex flex-col justify-center text-center bg-gold/5">
+                <span class="text-slate-500 text-[9px] uppercase tracking-widest mb-1 font-bold">Mahabote Animal</span>
+                <span class="text-lg font-bold text-white">{{ selectedDay().mm.animal_sign }}</span>
+             </div>
+          </div>
+
+          @if (selectedDay().mm.holiday || selectedDay().mm.sabbath) {
+            <div class="flex flex-col gap-2">
+              @if (selectedDay().mm.holiday) {
+                <div class="bg-gold/10 border border-gold/30 rounded-xl p-3 text-center">
+                  <span class="text-gold text-xs font-bold tracking-wider uppercase block mb-1">Public Holiday</span>
+                  <span class="text-white font-medium">{{ selectedDay().mm.holiday }}</span>
+                </div>
+              }
+              @if (selectedDay().mm.sabbath) {
+                <div class="bg-accent/10 border border-accent/30 rounded-xl p-3 text-center">
+                  <span class="text-accent text-xs font-bold tracking-wider uppercase block mb-1">Religious Observance</span>
+                  <span class="text-white font-medium">{{ selectedDay().mm.sabbath }} Day</span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
   </div>
 </div>

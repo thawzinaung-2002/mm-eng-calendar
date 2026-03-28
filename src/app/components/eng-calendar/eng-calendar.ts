@@ -11,6 +11,7 @@ import { CeMmDateTime } from '../../core/myanmar-calendar';
 })
 export class EngCalendarComponent {
   currentDate = signal(new Date());
+  selectedDay = signal<any>(null);
 
   years = Array.from({ length: 201 }, (_, i) => new Date().getFullYear() - 100 + i);
   months = [
