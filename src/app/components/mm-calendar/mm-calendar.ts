@@ -22,21 +22,29 @@ export class MmCalendarComponent {
   mmMonth = signal(this._todayMm.mm);
 
   years = Array.from({ length: 301 }, (_, i) => 1200 + i);
-  allMonths = [
-    { value: 1, name_my: 'တန်ခူး' },
-    { value: 2, name_my: 'ကဆုန်' },
-    { value: 3, name_my: 'နယုန်' },
-    { value: 0, name_my: 'ပထမဝါဆို' },
-    { value: 4, name_my: 'ဒုတိယဝါဆို / ဝါဆို' },
-    { value: 5, name_my: 'ဝါခေါင်' },
-    { value: 6, name_my: 'တော်သလင်း' },
-    { value: 7, name_my: 'သီတင်းကျွတ်' },
-    { value: 8, name_my: 'တန်ဆောင်မုန်း' },
-    { value: 9, name_my: 'နတ်တော်' },
-    { value: 10, name_my: 'ပြာသို' },
-    { value: 11, name_my: 'တပို့တွဲ' },
-    { value: 12, name_my: 'တပေါင်း' },
-  ];
+  allMonths = computed(() => {
+    const list = [
+      { value: 1, name_my: 'တန်ခူး' },
+      { value: 2, name_my: 'ကဆုန်' },
+      { value: 3, name_my: 'နယုန်' },
+      { value: 0, name_my: 'ပထမဝါဆို' },
+      { value: 4, name_my: 'ဒုတိယဝါဆို / ဝါဆို' },
+      { value: 5, name_my: 'ဝါခေါင်' },
+      { value: 6, name_my: 'တော်သလင်း' },
+      { value: 7, name_my: 'သီတင်းကျွတ်' },
+      { value: 8, name_my: 'တန်ဆောင်မုန်း' },
+      { value: 9, name_my: 'နတ်တော်' },
+      { value: 10, name_my: 'ပြာသို' },
+      { value: 11, name_my: 'တပို့တွဲ' },
+      { value: 12, name_my: 'တပေါင်း' }
+    ];
+    
+    // Dynamically insert intercalary months if we fall on them, ensuring DOM bindings never fail
+    if (this.mmMonth() === 13 && !list.some(m => m.value === 13)) list.push({ value: 13, name_my: 'တန်ခူး' });
+    if (this.mmMonth() === 14 && !list.some(m => m.value === 14)) list.push({ value: 14, name_my: 'ကဆုန်' });
+    
+    return list;
+  });
 
   monthInfo = computed(() => {
     const months = [
