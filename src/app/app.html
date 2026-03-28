@@ -28,7 +28,7 @@
       </div>
 
       <!-- Mobile Menu Toggle -->
-      <button class="md:hidden p-2 text-gold" (click)="toggleMenu()">
+      <button class="md:hidden p-2 text-gold hover:bg-gold/10 active:bg-gold/25 active:scale-90 rounded-lg transition-all duration-200" (click)="toggleMenu()">
         <span class="text-2xl">{{ isMobileMenuOpen() ? '✕' : '☰' }}</span>
       </button>
     </div>
@@ -41,7 +41,7 @@
              (click)="isMobileMenuOpen.set(false)"
              routerLinkActive="bg-gold/10 text-gold"
              [routerLinkActiveOptions]="{exact: true}"
-             class="px-4 py-3 rounded-xl text-base font-medium text-slate-300">
+             class="px-4 py-3 rounded-xl text-base font-medium text-slate-300 hover:text-white hover:bg-gold/15 active:bg-gold/25 active:scale-95 transition-all duration-200">
             {{ link.icon }} {{ link.label }}
           </a>
         }

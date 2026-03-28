@@ -40,8 +40,8 @@
              (click)="!day.isPadding && day.mm && selectedDay.set(day)"
              [ngClass]="{
                'opacity-20 pointer-events-none': day.isPadding,
-               'bg-gold border-gold/80 text-navy cursor-pointer shadow-gold/30 shadow-xl scale-105 z-10': !day.isPadding && day.isToday,
-               'bg-navy-light cursor-pointer hover:bg-gold/5 hover:-translate-y-1 shadow-lg': !day.isPadding && !day.isToday
+               'bg-gold border-gold/80 text-navy cursor-pointer shadow-gold/30 shadow-xl scale-105 z-10 active:scale-100': !day.isPadding && day.isToday,
+               'bg-navy-light cursor-pointer hover:bg-gold/15 hover:border-gold/30 active:bg-gold/25 active:scale-95 active:border-gold/50 shadow-lg': !day.isPadding && !day.isToday
              }">
           <div class="flex justify-between items-start mb-1 flex-wrap">
             <span class="text-sm md:text-xl font-myanmar" [ngClass]="day.isToday ? 'font-black text-navy' : 'font-black'">{{ !day.isPadding && day.mm ? toMmDigit(day.mm.mf) : '' }}</span>
