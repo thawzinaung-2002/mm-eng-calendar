@@ -1,0 +1,71 @@
+<div class="container mx-auto p-4 max-w-4xl">
+  <div class="card overflow-hidden">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+      <div class="flex flex-col">
+        <h2 class="text-3xl font-extrabold gold-text font-myanmar">{{ monthInfo().name_my }}</h2>
+        <span class="text-xl text-gold-dark font-myanmar">{{ mmYear() }} ခုနှစ်</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <select [ngModel]="mmMonth()" (ngModelChange)="mmMonth.set(+$event)" class="bg-navy border border-slate-700 rounded-lg p-2 text-white focus:border-gold outline-none h-[42px] font-myanmar">
+          @for (m of allMonths; track m.value) {
+            <option [value]="m.value">{{ m.name_my }}</option>
+          }
+        </select>
+        <select [ngModel]="mmYear()" (ngModelChange)="mmYear.set(+$event)" class="bg-navy border border-slate-700 rounded-lg p-2 text-white focus:border-gold outline-none h-[42px]">
+          @for (y of years; track y) {
+            <option [value]="y">{{ y }}</option>
+          }
+        </select>
+        <div class="flex gap-2">
+          <button (click)="prevMonth()" class="p-2 bg-navy-light rounded-lg border border-slate-700 hover:border-gold transition-all">←</button>
+          <button (click)="nextMonth()" class="p-2 bg-navy-light rounded-lg border border-slate-700 hover:border-gold transition-all">→</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar Grid -->
+    <div class="grid grid-cols-7 gap-1 md:gap-2">
+      <!-- Weekday Names -->
+      @for (d of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; track d) {
+        <div class="text-center text-[10px] md:text-xs font-bold text-slate-500 uppercase py-1 md:py-2">{{ d }}</div>
+      }
+
+      <!-- Calendar Days -->
+      @for (day of days(); track day.engDate) {
+        <div class="min-h-[80px] md:min-h-[100px] border border-slate-800 rounded-lg md:rounded-xl p-1 md:p-2 transition-all hover:bg-gold/5 overflow-hidden"
+             [ngClass]="{
+               'opacity-20 pointer-events-none': day.isPadding,
+               'bg-navy-light': !day.isPadding
+             }">
+          <div class="flex justify-between items-start mb-1 flex-wrap">
+            <span class="text-sm md:text-xl font-black font-myanmar">{{ !day.isPadding && day.mm ? toMmDigit(day.mm.mf) : '' }}</span>
+            <span class="text-[8px] md:text-[10px] text-slate-500 font-bold uppercase leading-tight">{{ day.engDate | date:'MMM d' }}</span>
+          </div>
+
+          @if (!day.isPadding && day.mm) {
+            <div class="flex flex-col gap-0 md:gap-1">
+               <span class="text-[8px] md:text-[10px] text-slate-400 font-bold uppercase tracking-tighter">{{ day.engDate | date:'EE' }}</span>
+               
+               @if (day.mm.mp === 1 || day.mm.mp === 3) {
+                 <div class="text-[8px] md:text-[10px] bg-gold/20 text-gold px-1 rounded inline-block w-fit mt-1">
+                    {{ day.mm.mp_name }}
+                 </div>
+               }
+               @if (day.mm.sabbath) {
+                 <div class="text-[8px] md:text-[9px] bg-accent/20 text-accent px-1 rounded inline-block w-fit font-bold mt-1">
+                    {{ day.mm.sabbath }}
+                 </div>
+               }
+               @if (day.mm.holiday) {
+                 <div class="text-[8px] bg-red-900/40 text-red-300 px-1 rounded inline-block w-full truncate mt-1" [title]="day.mm.holiday">
+                    {{ day.mm.holiday }}
+                 </div>
+               }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
