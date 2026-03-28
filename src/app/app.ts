@@ -31,6 +31,7 @@ export class App {
   navLinks = [
     { path: '/', label: 'English Calendar', icon: '📅' },
     { path: '/myanmar-calendar', label: 'Myanmar Calendar', icon: '🕉️' },
+    { path: '/day-calculator', label: 'Day Calculator', icon: '⏱️' },
     { path: '/eng-to-myanmar', label: 'Eng ➔ MM', icon: '🔄' },
     { path: '/myanmar-to-eng', label: 'MM ➔ Eng', icon: '🔄' },
   ];

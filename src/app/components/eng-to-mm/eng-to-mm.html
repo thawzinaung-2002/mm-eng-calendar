@@ -10,32 +10,37 @@
              class="bg-navy-light border border-slate-700 rounded-xl p-4 text-white focus:outline-none focus:border-gold transition-all shadow-inner">
     </div>
 
-    @if (mmDate()) {
+    @if (!isYearValid()) {
+      <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-6 text-center animate-in fade-in duration-300">
+        <div class="text-3xl mb-2">⚠️</div>
+        <p class="text-amber-500 font-medium tracking-wide">Please enter a full 4-digit year (e.g., 2024).</p>
+      </div>
+    } @else if (mmDate(); as date) {
       <div class="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-navy rounded-2xl p-4 md:p-6 border border-slate-800/50 flex flex-col items-center justify-center text-center">
             <span class="text-slate-400 text-xs uppercase tracking-widest mb-2 font-bold">မြန်မာသက္ကရာဇ်</span>
-            <span class="text-3xl font-bold gold-text">{{ mmDate().my }}</span>
-            <span class="text-sm text-slate-500 mt-1">သာသနာနှစ်: {{ mmDate().my + 1182 }}</span>
+            <span class="text-3xl font-bold gold-text">{{ date.my }}</span>
+            <span class="text-sm text-slate-500 mt-1">သာသနာနှစ်: {{ date.my + 1182 }}</span>
           </div>
           
           <div class="bg-navy rounded-2xl p-4 md:p-6 border border-slate-800/50 flex flex-col items-center justify-center text-center">
             <span class="text-slate-400 text-xs uppercase tracking-widest mb-2 font-bold">လနှင့် လဆန်း/လဆုတ်</span>
-            <span class="text-2xl font-bold gold-text font-myanmar">{{ mmDate().mm_name_my }}</span>
-            <span class="text-sm text-slate-400 mt-1">{{ mmDate().mp_name_my }}</span>
+            <span class="text-2xl font-bold gold-text font-myanmar">{{ date.mm_name_my }}</span>
+            <span class="text-sm text-slate-400 mt-1">{{ date.mp_name_my }}</span>
           </div>
 
           <div class="bg-navy rounded-2xl p-4 md:p-6 border border-slate-800/50 flex flex-col items-center justify-center text-center">
             <span class="text-slate-400 text-xs uppercase tracking-widest mb-2 font-bold">ရက်စွဲ</span>
-            <span class="text-4xl font-black text-white">{{ mmDate().mf }}</span>
-            <span class="text-sm text-slate-500 mt-1 font-myanmar">{{ mmDate().weekday_my }}နေ့</span>
+            <span class="text-4xl font-black text-white">{{ date.mf }}</span>
+            <span class="text-sm text-slate-500 mt-1 font-myanmar">{{ date.weekday_my }}နေ့</span>
           </div>
 
           <div class="bg-navy rounded-2xl p-4 md:p-6 border border-slate-800/50 flex flex-col items-center justify-center text-center">
             <span class="text-slate-400 text-xs uppercase tracking-widest mb-2 font-bold">ဥပုသ်နေ့</span>
-            @if (mmDate().sabbath) {
+            @if (date.sabbath) {
               <span class="text-xl font-bold text-accent animate-pulse">
-                {{ mmDate().sabbath === 'Sabbath' ? 'ဥပုသ်နေ့' : 'ဥပုသ်အကြိုနေ့' }}
+                {{ date.sabbath === 'Sabbath' ? 'ဥပုသ်နေ့' : 'ဥပုသ်အကြိုနေ့' }}
               </span>
             } @else {
               <span class="text-xl text-slate-600">မရှိပါ</span>
@@ -45,19 +50,19 @@
           <!-- Zodiac Sections -->
           <div class="bg-navy rounded-2xl p-4 md:p-6 border border-slate-800/50 flex flex-col items-center justify-center text-center">
             <span class="text-slate-400 text-xs uppercase tracking-widest mb-2 font-bold">ရာသီခွင်</span>
-            <span class="text-2xl font-bold text-white">{{ mmDate().rasi_my }}ရာသီ</span>
+            <span class="text-2xl font-bold text-white">{{ date.rasi_my }}ရာသီ</span>
           </div>
 
           <div class="bg-navy rounded-2xl p-4 md:p-6 border border-slate-800/50 flex flex-col items-center justify-center text-center">
             <span class="text-slate-400 text-xs uppercase tracking-widest mb-2 font-bold">မဟာဘုတ် (နေ့နံ)</span>
-            <span class="text-2xl font-bold text-white">{{ mmDate().animal_sign_my }}</span>
+            <span class="text-2xl font-bold text-white">{{ date.animal_sign_my }}</span>
           </div>
         </div>
 
-        @if (mmDate().holiday) {
+        @if (date.holiday) {
           <div class="bg-gold/10 border border-gold/30 rounded-2xl p-4 text-center">
             <span class="text-gold font-bold">အစိုးရရုံးပိတ်ရက်: </span>
-            <span class="text-white">{{ mmDate().holiday }}</span>
+            <span class="text-white">{{ date.holiday }}</span>
           </div>
         }
       </div>

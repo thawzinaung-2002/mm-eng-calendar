@@ -62,7 +62,7 @@ export class EngCalendarComponent {
       const date = new Date(year, month, i);
       const jd = date.getTime() / 86400000 + 2440587.5;
       const tz = -date.getTimezoneOffset() / 60.0;
-      const mm = new CeMmDateTime(jd, tz);
+      const mm = new CeMmDateTime(jd, tz, 1); // Forced Gregorian logic (1)
 
       calendarDays.push({
         num: i,

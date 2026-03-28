@@ -16,7 +16,7 @@ export class MmCalendarComponent {
   // Initialize to current real-world Myanmar date
   private _todayJD = new Date().getTime() / 86400000 + 2440587.5;
   private _todayTZ = -new Date().getTimezoneOffset() / 60.0;
-  private _todayMm = new CeMmDateTime(this._todayJD, this._todayTZ);
+  private _todayMm = new CeMmDateTime(this._todayJD, this._todayTZ, 1);
   
   mmYear = signal(this._todayMm.my);
   mmMonth = signal(this._todayMm.mm);
@@ -84,8 +84,8 @@ export class MmCalendarComponent {
 
     for (let i = 1; i <= mml; i++) {
         const jd = CeMmDateTime.m2j(year, month, i);
-        const w = CeDateTime.j2w(jd);
-        const mm = new CeMmDateTime(jd, 0); // Use integer JDN with 0 tz for exact date alignment
+        const w = CeDateTime.j2w(jd, 1); // Force Gregorian for week calculation
+        const mm = new CeMmDateTime(jd, 0, 1); // Use integer JDN with 0 tz for exact date alignment
         const engDate = new Date(w.y, w.m - 1, w.d);
         
         calendarDays.push({

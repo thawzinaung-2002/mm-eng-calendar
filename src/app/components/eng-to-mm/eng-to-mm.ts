@@ -10,12 +10,19 @@ import { CeMmDateTime } from '../../core/myanmar-calendar';
   templateUrl: './eng-to-mm.html'
 })
 export class EngToMmComponent {
-  selectedDate = signal(new Date().toISOString().split('T')[0]);
+  private today = new Date();
+  selectedDate = signal(`${this.today.getFullYear()}-${String(this.today.getMonth() + 1).padStart(2, '0')}-${String(this.today.getDate()).padStart(2, '0')}`);
+  
+  isYearValid = computed(() => {
+    const year = this.selectedDate().split('-')[0];
+    return year.length === 4;
+  });
 
   mmDate = computed(() => {
+    if (!this.isYearValid()) return null;
     const d = new Date(this.selectedDate());
-    const jd = d.getTime() / 86400000 + 2440587.5;
     const tz = -d.getTimezoneOffset() / 60.0;
-    return new CeMmDateTime(jd, tz);
+    const jd = d.getTime() / 86400000 + 2440587.5;
+    return new CeMmDateTime(jd, tz, 1); // Forced Gregorian logic (1)
   });
 }

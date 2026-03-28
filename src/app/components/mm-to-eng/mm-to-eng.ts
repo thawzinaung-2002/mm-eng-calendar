@@ -10,40 +10,56 @@ import { CeMmDateTime, CeDateTime } from '../../core/myanmar-calendar';
   templateUrl: './mm-to-eng.html'
 })
 export class MmToEngComponent {
-  mmYear = signal(1387);
-  mmMonth = signal(1); // Tagu
-  mmDay = signal(1);
-  mmPhase = signal(0); // 0=Waxing, 1=Full Moon, 2=Waning, 3=New Moon
+  private today = new CeMmDateTime();
+  mmYear = signal(this.today.my);
+  mmMonth = signal(this.today.mm);
+  mmDay = signal(this.today.mf);
+  mmPhase = signal(this.today.mp > 1 ? 2 : 0); // Normalize to Waxing (0) or Waning (2)
 
-  months = [
-    { id: 1, name: 'Tagu', name_my: 'တန်ခူး' },
-    { id: 2, name: 'Kason', name_my: 'ကဆုန်' },
-    { id: 3, name: 'Nayon', name_my: 'နယုန်' },
-    { id: 4, name: 'Waso', name_my: 'ဝါဆို' },
-    { id: 5, name: 'Wagaung', name_my: 'ဝါခေါင်' },
-    { id: 6, name: 'Tawthalin', name_my: 'တော်သလင်း' },
-    { id: 7, name: 'Thadingyut', name_my: 'သီတင်းကျွတ်' },
-    { id: 8, name: 'Tazaungmon', name_my: 'တန်ဆောင်မုန်း' },
-    { id: 9, name: 'Nadaw', name_my: 'နတ်တော်' },
-    { id: 10, name: 'Pyatho', name_my: 'ပြာသို' },
-    { id: 11, name: 'Tabodwe', name_my: 'တပို့တွဲ' },
-    { id: 12, name: 'Tabaung', name_my: 'တပေါင်း' },
-  ];
+  allMonths = computed(() => {
+    const list = [
+      { id: 1, name_my: 'တန်ခူး' },
+      { id: 2, name_my: 'ကဆုန်' },
+      { id: 3, name_my: 'နယုန်' },
+      { id: 0, name_my: 'ပထမဝါဆို' },
+      { id: 4, name_my: 'ဒုတိယဝါဆို / ဝါဆို' },
+      { id: 5, name_my: 'ဝါခေါင်' },
+      { id: 6, name_my: 'တော်သလင်း' },
+      { id: 7, name_my: 'သီတင်းကျွတ်' },
+      { id: 8, name_my: 'တန်ဆောင်မုန်း' },
+      { id: 9, name_my: 'နတ်တော်' },
+      { id: 10, name_my: 'ပြာသို' },
+      { id: 11, name_my: 'တပို့တွဲ' },
+      { id: 12, name_my: 'တပေါင်း' },
+    ];
+    
+    // Support Late Tagu/Kason if needed
+    if (this.mmMonth() === 13) list.push({ id: 13, name_my: 'တန်ခူး (နှောင်း)' });
+    if (this.mmMonth() === 14) list.push({ id: 14, name_my: 'ကဆုန် (နှောင်း)' });
+    
+    return list;
+  });
 
   phases = [
     { id: 0, name_my: 'လဆန်း' },
     { id: 2, name_my: 'လဆုတ်' }
   ];
 
+  isYearValid = computed(() => {
+    return this.mmYear().toString().length === 4;
+  });
+
   mmDateTime = computed(() => {
+    if (!this.isYearValid()) return null as any;
     // Determine the day of month (1-30) based on fortnight day and phase
     const myInfo = CeMmDateTime.cal_my(this.mmYear());
     const md = CeMmDateTime.cal_md(this.mmDay(), this.mmPhase(), this.mmMonth(), myInfo.myt);
     const jd = CeMmDateTime.m2j(this.mmYear(), this.mmMonth(), md);
-    return new CeMmDateTime(jd, 0); // Use integer JDN with 0 tz for exact mapping
+    return new CeMmDateTime(jd, 0, 1); // Forced Gregorian logic (1)
   });
 
   engDate = computed(() => {
+    if (!this.mmDateTime()) return null;
     const jd = this.mmDateTime().jd;
     const w = CeDateTime.j2w(jd);
     return new Date(w.y, w.m - 1, w.d);
