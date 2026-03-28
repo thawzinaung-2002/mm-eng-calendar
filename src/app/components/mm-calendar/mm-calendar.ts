@@ -11,8 +11,15 @@ import { CeMmDateTime, CeDateTime } from '../../core/myanmar-calendar';
 })
 export class MmCalendarComponent {
   selectedDay = signal<any>(null);
-  mmYear = signal(1387);
-  mmMonth = signal(1); // Tagu
+  currentWeekday = signal(new Date().getDay());
+  
+  // Initialize to current real-world Myanmar date
+  private _todayJD = new Date().getTime() / 86400000 + 2440587.5;
+  private _todayTZ = -new Date().getTimezoneOffset() / 60.0;
+  private _todayMm = new CeMmDateTime(this._todayJD, this._todayTZ);
+  
+  mmYear = signal(this._todayMm.my);
+  mmMonth = signal(this._todayMm.mm);
 
   years = Array.from({ length: 301 }, (_, i) => 1200 + i);
   allMonths = [
@@ -34,11 +41,11 @@ export class MmCalendarComponent {
   monthInfo = computed(() => {
     const months = [
       "First Waso", "Tagu", "Kason", "Nayon", "Waso", "Wagaung", "Tawthalin",
-      "Thadingyut", "Tazaungmon", "Nadaw", "Pyatho", "Tabodwe", "Tabaung", "Late Tagu", "Late Kason"
+      "Thadingyut", "Tazaungmon", "Nadaw", "Pyatho", "Tabodwe", "Tabaung", "Tagu", "Kason"
     ];
     const months_my = [
       "ပဝါဆို", "တန်ခူး", "ကဆုန်", "နယုန်", "ဝါဆို", "ဝါခေါင်", "တော်သလင်း",
-      "သီတင်းကျွတ်", "တန်ဆောင်မုန်း", "နတ်တော်", "ပြာသို", "တပို့တွဲ", "တပေါင်း", "နှောင်းတန်ခူး", "နှောင်းကဆုန်"
+      "သီတင်းကျွတ်", "တန်ဆောင်မုန်း", "နတ်တော်", "ပြာသို", "တပို့တွဲ", "တပေါင်း", "တန်ခူး", "ကဆုန်"
     ];
     return { name: months[this.mmMonth()], name_my: months_my[this.mmMonth()] };
   });
@@ -71,17 +78,26 @@ export class MmCalendarComponent {
         const jd = CeMmDateTime.m2j(year, month, i);
         const w = CeDateTime.j2w(jd);
         const mm = new CeMmDateTime(jd, 0); // Use integer JDN with 0 tz for exact date alignment
+        const engDate = new Date(w.y, w.m - 1, w.d);
         
         calendarDays.push({
             num: i,
             isPadding: false,
-            engDate: new Date(w.y, w.m - 1, w.d),
+            isToday: this.isToday(engDate),
+            engDate: engDate,
             mm: mm
         });
     }
 
     return calendarDays;
   });
+
+  private isToday(d: Date): boolean {
+    const today = new Date();
+    return d.getDate() === today.getDate() &&
+      d.getMonth() === today.getMonth() &&
+      d.getFullYear() === today.getFullYear();
+  }
 
   nextMonth() {
     if (this.mmMonth() === 12) {

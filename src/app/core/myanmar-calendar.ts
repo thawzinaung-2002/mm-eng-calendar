@@ -276,14 +276,14 @@ export class CeMmDateTime extends CeDateTime {
   get mm_name() {
     return [
       "First Waso", "Tagu", "Kason", "Nayon", "Waso", "Wagaung", "Tawthalin",
-      "Thadingyut", "Tazaungmon", "Nadaw", "Pyatho", "Tabodwe", "Tabaung", "Late Tagu", "Late Kason"
+      "Thadingyut", "Tazaungmon", "Nadaw", "Pyatho", "Tabodwe", "Tabaung", "Tagu", "Kason"
     ][this.mm];
   }
 
   get mm_name_my() {
     return [
       "ပဝါဆို", "တန်ခူး", "ကဆုန်", "နယုန်", "ဝါဆို", "ဝါခေါင်", "တော်သလင်း",
-      "သီတင်းကျွတ်", "တန်ဆောင်မုန်း", "နတ်တော်", "ပြာသို", "တပို့တွဲ", "တပေါင်း", "နှောင်းတန်ခူး", "နှောင်းကဆုန်"
+      "သီတင်းကျွတ်", "တန်ဆောင်မုန်း", "နတ်တော်", "ပြာသို", "တပို့တွဲ", "တပေါင်း", "တန်ခူး", "ကဆုန်"
     ][this.mm];
   }
 

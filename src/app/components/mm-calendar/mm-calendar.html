@@ -27,8 +27,11 @@
     <!-- Calendar Grid -->
     <div class="grid grid-cols-7 gap-1 md:gap-2">
       <!-- Weekday Names -->
-      @for (d of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; track d) {
-        <div class="text-center text-[10px] md:text-xs font-bold text-slate-500 uppercase py-1 md:py-2">{{ d }}</div>
+      @for (d of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; track d; let i = $index) {
+        <div class="text-center text-[10px] md:text-xs font-bold uppercase py-1 md:py-2 rounded-t-lg transition-colors"
+             [ngClass]="i === currentWeekday() ? 'text-gold bg-gold/10' : 'text-slate-500'">
+          {{ d }}
+        </div>
       }
 
       <!-- Calendar Days -->
@@ -37,19 +40,19 @@
              (click)="!day.isPadding && day.mm && selectedDay.set(day)"
              [ngClass]="{
                'opacity-20 pointer-events-none': day.isPadding,
-               'bg-navy-light cursor-pointer hover:bg-gold/5 hover:-translate-y-1 shadow-lg': !day.isPadding
+               'bg-gold border-gold/80 text-navy cursor-pointer shadow-gold/30 shadow-xl scale-105 z-10': !day.isPadding && day.isToday,
+               'bg-navy-light cursor-pointer hover:bg-gold/5 hover:-translate-y-1 shadow-lg': !day.isPadding && !day.isToday
              }">
           <div class="flex justify-between items-start mb-1 flex-wrap">
-            <span class="text-sm md:text-xl font-black font-myanmar">{{ !day.isPadding && day.mm ? toMmDigit(day.mm.mf) : '' }}</span>
-            <span class="text-[8px] md:text-[10px] text-slate-500 font-bold uppercase leading-tight">{{ day.engDate | date:'MMM d' }}</span>
+            <span class="text-sm md:text-xl font-myanmar" [ngClass]="day.isToday ? 'font-black text-navy' : 'font-black'">{{ !day.isPadding && day.mm ? toMmDigit(day.mm.mf) : '' }}</span>
+            <span class="text-[8px] md:text-[10px] uppercase leading-tight" [ngClass]="day.isToday ? 'text-navy font-bold' : 'text-slate-500 font-bold'">{{ day.engDate | date:'MMM d' }}</span>
           </div>
 
           @if (!day.isPadding && day.mm) {
             <div class="flex flex-col gap-0 md:gap-1">
-               <span class="text-[8px] md:text-[10px] text-slate-400 font-bold uppercase tracking-tighter">{{ day.engDate | date:'EE' }}</span>
-               
                @if (day.mm.mp === 1 || day.mm.mp === 3) {
-                 <div class="text-[8px] md:text-[10px] bg-gold/20 text-gold px-1 rounded inline-block w-fit mt-1">
+                 <div class="text-[8px] md:text-[10px] px-1 rounded inline-block w-fit mt-1 font-semibold"
+                      [ngClass]="day.isToday ? 'bg-navy/20 text-navy' : 'bg-gold/20 text-gold'">
                     {{ day.mm.mp_name }}
                  </div>
                }

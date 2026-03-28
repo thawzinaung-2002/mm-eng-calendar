@@ -24,8 +24,11 @@
     <!-- Calendar Grid -->
     <div class="grid grid-cols-7 gap-1 md:gap-2">
       <!-- Weekday Names -->
-      @for (d of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; track d) {
-        <div class="text-center text-[10px] md:text-xs font-bold text-slate-500 uppercase py-1 md:py-2">{{ d }}</div>
+      @for (d of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; track d; let i = $index) {
+        <div class="text-center text-[10px] md:text-xs font-bold uppercase py-1 md:py-2 rounded-t-lg transition-colors"
+             [ngClass]="i === currentWeekday() ? 'text-gold bg-gold/10' : 'text-slate-500'">
+          {{ d }}
+        </div>
       }
 
       <!-- Calendar Days -->
@@ -34,22 +37,23 @@
              (click)="!day.isPadding && selectedDay.set(day)"
              [ngClass]="{
                'opacity-20 pointer-events-none': day.isPadding,
-               'bg-gold/10 border-gold/50 cursor-pointer': day.isToday,
+               'bg-gold border-gold/80 text-navy cursor-pointer shadow-gold/30 shadow-xl scale-105 z-10': day.isToday,
                'bg-navy-light cursor-pointer hover:bg-gold/5 hover:-translate-y-1 shadow-lg': !day.isPadding && !day.isToday
              }">
           <div class="flex justify-between items-start mb-1">
-            <span class="text-sm md:text-lg font-bold" [class.text-gold]="day.isToday">{{ day.num }}</span>
+            <span class="text-sm md:text-lg font-bold" [ngClass]="day.isToday ? 'text-navy font-black' : ''">{{ day.num }}</span>
           </div>
 
           @if (!day.isPadding && day.mm) {
             <div class="flex flex-col gap-0 md:gap-1">
                <div class="flex items-center gap-1 flex-wrap">
-                 <span class="text-[10px] md:text-xs text-gold-dark font-myanmar leading-tight">{{ day.mm.mm_name_my }}</span>
-                 <span class="text-[9px] md:text-[10px] text-slate-500">{{ day.mm.mf }} ရက်</span>
+                 <span class="text-[10px] md:text-xs font-myanmar leading-tight" [ngClass]="day.isToday ? 'text-navy font-bold' : 'text-gold-dark'">{{ day.mm.mm_name_my }}</span>
+                 <span class="text-[9px] md:text-[10px]" [ngClass]="day.isToday ? 'text-navy/70 font-semibold' : 'text-slate-500'">{{ day.mm.mf }} ရက်</span>
                </div>
                
                @if (day.mm.mp === 1 || day.mm.mp === 3) {
-                 <div class="text-[8px] md:text-[10px] bg-gold/20 text-gold px-1 rounded inline-block w-fit mt-1">
+                 <div class="text-[8px] md:text-[10px] px-1 rounded inline-block w-fit mt-1 font-semibold"
+                      [ngClass]="day.isToday ? 'bg-navy/20 text-navy' : 'bg-gold/20 text-gold'">
                     {{ day.mm.mp_name }}
                  </div>
                }
