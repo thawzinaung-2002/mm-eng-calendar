@@ -67,6 +67,15 @@ body {
   transition: all 0.3s ease;
 }
 
+@media (max-width: 640px) {
+  .card {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+  }
+}
+
 .card:hover {
   border-color: rgba(245, 158, 11, 0.4);
   transform: translateY(-2px);
