@@ -32,9 +32,7 @@ export class MmToEngComponent {
 
   phases = [
     { id: 0, name_my: 'လဆန်း' },
-    { id: 1, name_my: 'လပြည့်' },
-    { id: 2, name_my: 'လဆုတ်' },
-    { id: 3, name_my: 'လကွယ်' }
+    { id: 2, name_my: 'လဆုတ်' }
   ];
 
   mmDateTime = computed(() => {
