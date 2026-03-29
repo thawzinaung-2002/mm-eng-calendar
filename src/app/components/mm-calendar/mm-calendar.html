@@ -72,70 +72,71 @@
       }
     </div>
 
-    <!-- Daily Details Modal (Burmese) -->
-    @if (selectedDay() && selectedDay().mm) {
-      <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-navy/80 backdrop-blur-sm transition-opacity" (click)="selectedDay.set(null)"></div>
-        
-        <!-- Modal Card -->
-        <div class="bg-navy border border-gold/20 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 w-full max-w-lg animate-in zoom-in-95 duration-200">
-          <div class="flex justify-between items-start mb-6">
-            <div class="flex flex-col">
-              <span class="text-xs uppercase text-slate-500 font-bold tracking-widest mb-1">{{ selectedDay().mm.mm_name_my }}</span>
-              <span class="text-3xl font-black gold-text font-myanmar">
-                {{ selectedDay().mm.mp_name_my }} {{ toMmDigit(selectedDay().mm.mf) }} ရက်
-              </span>
-            </div>
-            <button (click)="selectedDay.set(null)" class="text-slate-500 hover:text-white bg-slate-800/50 hover:bg-slate-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
-              ✕
-            </button>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4 mb-6">
-             <div class="bg-navy-light p-4 rounded-2xl border border-slate-700 flex flex-col items-center text-center">
-               <span class="text-[10px] uppercase text-slate-500 font-bold tracking-widest mb-1">အင်္ဂလိပ်ရက်စွဲ</span>
-               <span class="text-lg font-bold text-white mb-0.5">{{ selectedDay().engDate | date:'d MMMM yyyy' }}</span>
-               <span class="text-sm text-slate-400">{{ selectedDay().engDate | date:'EEEE' }}</span>
-             </div>
-             <div class="bg-navy-light p-4 rounded-2xl border border-slate-700 flex flex-col items-center text-center">
-               <span class="text-[10px] uppercase text-slate-500 font-bold tracking-widest mb-1">မြန်မာသက္ကရာဇ်</span>
-               <span class="text-xl font-black gold-text mt-1 font-myanmar">{{ toMmDigit(selectedDay().mm.my) }}</span>
-               <span class="text-xs text-slate-500 mt-1 font-myanmar">သာသနာနှစ်: {{ toMmDigit(selectedDay().mm.my + 1182) }}</span>
-             </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4 mb-6">
-             <div class="border border-gold/10 p-3 rounded-xl flex flex-col justify-center text-center bg-gold/5">
-                <span class="text-slate-500 text-[9px] uppercase tracking-widest mb-1 font-bold">ရာသီခွင်</span>
-                <span class="text-lg font-bold text-white">{{ selectedDay().mm.rasi_my }}ရာသီ</span>
-             </div>
-             <div class="border border-gold/10 p-3 rounded-xl flex flex-col justify-center text-center bg-gold/5">
-                <span class="text-slate-500 text-[9px] uppercase tracking-widest mb-1 font-bold">မဟာဘုတ်</span>
-                <span class="text-lg font-bold text-white">{{ selectedDay().mm.animal_sign_my }}</span>
-             </div>
-          </div>
-
-          @if (selectedDay().mm.holiday || selectedDay().mm.sabbath) {
-            <div class="flex flex-col gap-2">
-              @if (selectedDay().mm.holiday) {
-                <div class="bg-gold/10 border border-gold/30 rounded-xl p-3 text-center">
-                  <span class="text-gold text-xs font-bold tracking-wider mb-1 block">အစိုးရရုံးပိတ်ရက်</span>
-                  <span class="text-white font-medium">{{ selectedDay().mm.holiday }}</span>
-                </div>
-              }
-              @if (selectedDay().mm.sabbath) {
-                <div class="bg-accent/10 border border-accent/30 rounded-xl p-3 text-center">
-                  <span class="text-accent text-xs font-bold tracking-wider mb-1 block">ဥပုသ်နေ့</span>
-                  <span class="text-white font-medium">
-                    {{ selectedDay().mm.sabbath === 'Sabbath' ? 'ဥပုသ်နေ့' : 'ဥပုသ်အကြိုနေ့' }}
-                  </span>
-                </div>
-              }
-            </div>
-          }
-        </div>
-      </div>
-    }
   </div>
+
+  <!-- Daily Details Modal (Burmese) -->
+  @if (selectedDay() && selectedDay().mm) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-y-auto">
+      <!-- Backdrop -->
+      <div class="absolute inset-0 bg-navy/80 backdrop-blur-sm transition-opacity" (click)="selectedDay.set(null)"></div>
+      
+      <!-- Modal Card -->
+      <div class="bg-navy border border-gold/20 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 w-full max-w-lg my-auto animate-in zoom-in-95 duration-200">
+        <div class="flex justify-between items-start mb-6">
+          <div class="flex flex-col">
+            <span class="text-xs uppercase text-slate-500 font-bold tracking-widest mb-1">{{ selectedDay().mm.mm_name_my }}</span>
+            <span class="text-3xl font-black gold-text font-myanmar">
+              {{ selectedDay().mm.mp_name_my }} {{ toMmDigit(selectedDay().mm.mf) }} ရက်
+            </span>
+          </div>
+          <button (click)="selectedDay.set(null)" class="text-slate-500 hover:text-white bg-slate-800/50 hover:bg-slate-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+            ✕
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-6">
+           <div class="bg-navy-light p-4 rounded-2xl border border-slate-700 flex flex-col items-center text-center">
+             <span class="text-[10px] uppercase text-slate-500 font-bold tracking-widest mb-1">အင်္ဂလိပ်ရက်စွဲ</span>
+             <span class="text-lg font-bold text-white mb-0.5">{{ selectedDay().engDate | date:'d MMMM yyyy' }}</span>
+             <span class="text-sm text-slate-400">{{ selectedDay().engDate | date:'EEEE' }}</span>
+           </div>
+           <div class="bg-navy-light p-4 rounded-2xl border border-slate-700 flex flex-col items-center text-center">
+             <span class="text-[10px] uppercase text-slate-500 font-bold tracking-widest mb-1">မြန်မာသက္ကရာဇ်</span>
+             <span class="text-xl font-black gold-text mt-1 font-myanmar">{{ toMmDigit(selectedDay().mm.my) }}</span>
+             <span class="text-xs text-slate-500 mt-1 font-myanmar">သာသနာနှစ်: {{ toMmDigit(selectedDay().mm.my + 1182) }}</span>
+           </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-6">
+           <div class="border border-gold/10 p-3 rounded-xl flex flex-col justify-center text-center bg-gold/5">
+              <span class="text-slate-500 text-[9px] uppercase tracking-widest mb-1 font-bold">ရာသီခွင်</span>
+              <span class="text-lg font-bold text-white">{{ selectedDay().mm.rasi_my }}ရာသီ</span>
+           </div>
+           <div class="border border-gold/10 p-3 rounded-xl flex flex-col justify-center text-center bg-gold/5">
+              <span class="text-slate-500 text-[9px] uppercase tracking-widest mb-1 font-bold">မဟာဘုတ်</span>
+              <span class="text-lg font-bold text-white">{{ selectedDay().mm.animal_sign_my }}</span>
+           </div>
+        </div>
+
+        @if (selectedDay().mm.holiday || selectedDay().mm.sabbath) {
+          <div class="flex flex-col gap-2">
+            @if (selectedDay().mm.holiday) {
+              <div class="bg-gold/10 border border-gold/30 rounded-xl p-3 text-center">
+                <span class="text-gold text-xs font-bold tracking-wider mb-1 block">အစိုးရရုံးပိတ်ရက်</span>
+                <span class="text-white font-medium">{{ selectedDay().mm.holiday }}</span>
+              </div>
+            }
+            @if (selectedDay().mm.sabbath) {
+              <div class="bg-accent/10 border border-accent/30 rounded-xl p-3 text-center">
+                <span class="text-accent text-xs font-bold tracking-wider mb-1 block">ဥပုသ်နေ့</span>
+                <span class="text-white font-medium">
+                  {{ selectedDay().mm.sabbath === 'Sabbath' ? 'ဥပုသ်နေ့' : 'ဥပုသ်အကြိုနေ့' }}
+                </span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
 </div>
